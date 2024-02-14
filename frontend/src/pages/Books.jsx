@@ -18,6 +18,15 @@ const Books = () => {
     fetchAllBooks();
   }, []);
 
+  const handleDelete = async (id) => {
+    try{
+        axios.delete(`http://localhost:3000/books/${id}`)
+        window.location.reload()
+    } catch(err) {
+        console.log(err.message)
+    }
+  }
+
   return (
     <div className="">
       <h1 className="text-center text-2xl font-bold mb-5">
@@ -28,17 +37,26 @@ const Books = () => {
           return (
             <div
               key={book.id}
-              className="flex flex-col items-center md:items-start mb-5 md:grid md:grid-cols-3 "
+              className="flex flex-col items-center md:flex-row mb-5 "
             >
               {book.cover && <img src={book.cover} alt={book.cover} />}
               <h1>{book.title}</h1>
               <p>{book.desc}</p>
               <span>{book.price}</span>
+              <div className="flex">
+                <button className="p-2 bg-yellow-500 border-2 rounded-lg  text-white">
+                    <Link to={`/editPage/${book.id}`}>  Update</Link>
+                
+                </button>
+                <button className="p-2 bg-red-500 border-2 rounded-lg text-white " onClick={() => handleDelete(book.id)}>
+                  Delete
+                </button>
+              </div>
             </div>
           );
         })}
         <div className="flex items-center justify-center">
-          <button className="p-2 bg-blue-500 border-2 rounded-lg ">
+          <button className="p-2 bg-blue-500 border-2 rounded-lg text-white">
             <Link to="/addPage">Add New Book</Link>
           </button>
         </div>
